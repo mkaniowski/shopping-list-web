@@ -1,10 +1,14 @@
 export const BASE_URL = 'http://localhost:5173'
 
-export const DATE_FORMAT = 'DD/MM/YYYY'
+export const API_URL = 'http://localhost:8080'
 
-export const THEME_LS = 'themeClientPortal'
+export const AUTH_URL = 'http://localhost:8090'
 
-export const AUTH_LS = 'onitsoft.auth.user'
+export const KEYCLOAK_REALM_NAME = 'shopping-realm'
+
+export const KEYCLOAK_URL = 'http://localhost:8090'
+
+export const KEYCLOAK_CLIENT_ID = 'shopping-list-web'
 
 export const IMG_OPTIMIZE_OPTIONS = {
   test: /\.(jpe?g|png|gif|tiff|webp|svg|avif)$/i,

@@ -9,7 +9,7 @@ import { ViteImageOptimizer } from 'vite-plugin-image-optimizer'
 import viteTsconfigPaths from 'vite-tsconfig-paths'
 
 //@ts-ignore
-import { BASE_URL, IMG_OPTIMIZE_OPTIONS } from './src/config'
+import { API_URL, IMG_OPTIMIZE_OPTIONS } from './src/config'
 
 export default defineConfig({
   base: '',
@@ -30,15 +30,15 @@ export default defineConfig({
       },
     ],
   },
-  // server: {
-  //   port: 3000,
-  //   proxy: {
-  //     '/api': {
-  //       target: BASE_URL,
-  //       changeOrigin: true,
-  //     },
-  //   },
-  // },
+  server: {
+    port: 3000,
+    proxy: {
+      '/api': {
+        target: API_URL,
+        changeOrigin: true,
+      },
+    },
+  },
   build: {
     target: browserslistToEsbuild(),
     sourcemap: true,

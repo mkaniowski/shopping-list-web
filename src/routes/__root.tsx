@@ -2,9 +2,8 @@ import '../index.css'
 
 import { QueryClient } from '@tanstack/react-query'
 import { createRootRouteWithContext, Outlet, ScrollRestoration } from '@tanstack/react-router'
-// import { TanStackRouterDevtools } from '@tanstack/router-devtools'
-import { Toaster } from '@/components/ui/toaster'
-import Navbar from '@/components/navbar/Navbar'
+import { TanStackRouterDevtools } from '@tanstack/router-devtools'
+import { Navbar, Toaster, Wrapper } from '@/components'
 
 export const Route = createRootRouteWithContext<{
   queryClient: QueryClient
@@ -16,10 +15,13 @@ function RootComponent() {
   return (
     <>
       <title>Shopping-list</title>
-      <Navbar />
-      <Outlet />
+      <Wrapper>
+        <Navbar />
+        <Outlet />
+      </Wrapper>
       <Toaster />
       <ScrollRestoration />
+      <TanStackRouterDevtools />
     </>
   )
 }

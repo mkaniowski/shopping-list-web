@@ -8,6 +8,8 @@ import Translations from './i18n/Translations'
 import { routeTree } from './routeTree.gen'
 import ErrorView from './views/ErrorView'
 import NotFoundView from './views/NotFoundView'
+import { keycloak } from '@/shared/keycloak'
+import { ThemeProvider } from '@/context/ThemeContext'
 
 const queryClient = new QueryClient()
 
@@ -53,12 +55,27 @@ const App = () => {
 
 const rootElement = document.getElementById('root')!
 
+try {
+  const authenticated = await keycloak.init({
+    onLoad: 'login-required',
+  })
+  if (authenticated) {
+    console.log('User is authenticated')
+  } else {
+    console.log('User is not authenticated')
+  }
+} catch (error) {
+  console.error('Failed to initialize adapter:', error)
+}
+
 if (!rootElement.innerHTML) {
   const root = ReactDOM.createRoot(rootElement)
   root.render(
     <Translations>
       <QueryClientProvider client={queryClient}>
-        <App />
+        <ThemeProvider>
+          <App />
+        </ThemeProvider>
       </QueryClientProvider>
     </Translations>,
   )
