@@ -35,8 +35,10 @@ export const ShoppingListDialog = ({ onSubmit: handleSubmit }: IShoppingListDial
   return (
     <DialogContent className={'flex flex-col gap-y-8'}>
       <DialogHeader>
-        <DialogTitle>{t('shoppingLists.dialog.title')}</DialogTitle>
-        <DialogDescription>{t('shoppingLists.dialog.description')}</DialogDescription>
+        <DialogTitle data-testid='dialog-title'>{t('shoppingLists.dialog.title')}</DialogTitle>
+        <DialogDescription data-testid='dialog-description'>
+          {t('shoppingLists.dialog.description')}
+        </DialogDescription>
       </DialogHeader>
       <form
         onSubmit={(e) => {
@@ -58,9 +60,11 @@ export const ShoppingListDialog = ({ onSubmit: handleSubmit }: IShoppingListDial
                   value={field.state.value}
                   onBlur={field.handleBlur}
                   onChange={(e) => field.handleChange(e.target.value)}
+                  data-testid='name-input'
                 />
                 <span
                   className={`text-sm ${field.state.meta.errors ? 'text-destructive' : 'invisible'}`}
+                  data-testid='name-error'
                 >
                   {field.state.meta.errors ? field.state.meta.errors[0] : ' '}
                 </span>
@@ -77,6 +81,7 @@ export const ShoppingListDialog = ({ onSubmit: handleSubmit }: IShoppingListDial
                 <Button
                   type='submit'
                   disabled={!canSubmit}
+                  data-testid='submit-button'
                 >
                   {isSubmitting ? '...' : t('shoppingLists.dialog.create')}
                 </Button>

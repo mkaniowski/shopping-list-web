@@ -26,10 +26,14 @@ export const ShoppingListsCard = ({ list, handleRemoveList }: IShoppingListsCard
         : <p>{t('shoppingLists.noProducts')}</p>}
       </CardContent>
       <CardFooter className={'w-full flex justify-end gap-x-2'}>
-        <Button onClick={() => handleRemoveList(list.id)}>
+        <Button
+          data-testid='delete-button'
+          onClick={() => handleRemoveList(list.id)}
+        >
           <TrashIcon />
         </Button>
         <Button
+          data-testid='edit-button'
           onClick={() => {
             navigate({ to: `/shopping-list/$listId`, params: { listId: list.id } })
           }}

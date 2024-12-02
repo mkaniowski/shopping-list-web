@@ -1,3 +1,4 @@
+// ProductCard.tsx
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { ShoppingListProduct } from '@/model/shoppingLists'
 import { Button, Dialog } from '@/components'
@@ -30,7 +31,7 @@ export const ProductCard = ({
       <CardFooter className={'flex gap-x-2 justify-end'}>
         <Dialog>
           <DialogTrigger asChild>
-            <Button>
+            <Button aria-label='edit'>
               <EditIcon />
             </Button>
           </DialogTrigger>
@@ -40,7 +41,10 @@ export const ProductCard = ({
           />
         </Dialog>
 
-        <Button onClick={() => handleRemoveProduct(product)}>
+        <Button
+          aria-label='trash'
+          onClick={() => handleRemoveProduct(product)}
+        >
           <TrashIcon />
         </Button>
       </CardFooter>

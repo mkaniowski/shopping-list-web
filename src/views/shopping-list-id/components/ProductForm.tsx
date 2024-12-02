@@ -33,6 +33,8 @@ export const ProductForm = ({ handleSubmit, product }: IProductFormProps) => {
 
   return (
     <form
+      role='form'
+      name={'product-form'}
       className='flex flex-col gap-y-4'
       onSubmit={(e) => {
         e.preventDefault()
