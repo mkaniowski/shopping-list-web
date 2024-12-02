@@ -39,6 +39,9 @@ export default defineConfig({
       },
     },
   },
+  preview: {
+    port: 8000,
+  },
   build: {
     target: browserslistToEsbuild(),
     sourcemap: true,

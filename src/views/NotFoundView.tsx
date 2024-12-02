@@ -1,5 +1,5 @@
 const NotFoundView = () => {
-  return <>TODO not found view</>
+  return <>Not found :c</>
 }
 
 export default NotFoundView

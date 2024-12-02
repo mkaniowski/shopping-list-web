@@ -1,5 +1,5 @@
 const ErrorView = () => {
-  return <>TODO err view</>
+  return <>Ooops! An error has occurred</>
 }
 
 export default ErrorView

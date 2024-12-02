@@ -1,54 +1,82 @@
 import { fireEvent, render, screen } from '@testing-library/react'
 import { describe, expect, it, vi } from 'vitest'
-import { I18nextProvider } from 'react-i18next'
-import { i18next } from '@/i18n/Translations'
 import { ShoppingListsCard } from './ShoppingListsCard'
-import '@testing-library/jest-dom'
+import { useNavigate } from '@tanstack/react-router'
+import { ShoppingList } from '@/model/shoppingLists'
+import { i18next } from '@/i18n/Translations'
+import { I18nextProvider } from 'react-i18next'
+import { t } from 'i18next'
 
-const mockShoppingList = {
-  id: '1',
-  name: 'Test Shopping List',
-  items: [
-    { id: '1', name: 'Item 1', quantity: 1 },
-    { id: '2', name: 'Item 2', quantity: 2 },
-  ],
-}
-
-const handleDelete = vi.fn()
-const handleEdit = vi.fn()
-
-const renderShoppingListsCard = () => {
-  return render(
-    <I18nextProvider i18n={i18next}>
-      <ShoppingListsCard
-        list={mockShoppingList}
-        handleRemoveList={handleDelete}
-      />
-    </I18nextProvider>,
-  )
-}
+vi.mock('@tanstack/react-router', () => ({
+  useNavigate: vi.fn(),
+}))
 
 describe('ShoppingListsCard', () => {
-  it('renders shopping list name', () => {
-    renderShoppingListsCard()
-    expect(screen.getByText('Test Shopping List')).toBeInTheDocument()
+  const mockNavigate = vi.fn()
+  const mockHandleRemoveList = vi.fn()
+
+  const mockList: ShoppingList = {
+    id: '1',
+    name: 'Groceries',
+    products: [
+      { name: 'Milk', quantity: 5, quantityType: 'a' },
+      { name: 'Eggs', quantity: 2, quantityType: 'b' },
+    ],
+  }
+
+  const setup = (list: ShoppingList = mockList) => {
+    vi.mocked(useNavigate).mockReturnValue(mockNavigate)
+    return render(
+      <I18nextProvider i18n={i18next}>
+        <ShoppingListsCard
+          list={list}
+          handleRemoveList={mockHandleRemoveList}
+        />
+      </I18nextProvider>,
+    )
+  }
+
+  it('renders list name and products', () => {
+    setup()
+
+    expect(screen.getByText('Groceries')).toBeInTheDocument()
+    expect(screen.getByText('Milk')).toBeInTheDocument()
+    expect(screen.getByText('Eggs')).toBeInTheDocument()
   })
 
-  it('renders shopping list items', () => {
-    renderShoppingListsCard()
-    expect(screen.getByText('Item 1')).toBeInTheDocument()
-    expect(screen.getByText('Item 2')).toBeInTheDocument()
-  })
+  it('shows "no products" message when the product list is empty', () => {
+    const emptyList: ShoppingList = {
+      id: '2',
+      name: 'Empty List',
+      products: [],
+    }
 
-  it('calls handleEdit when edit button is clicked', () => {
-    renderShoppingListsCard()
-    fireEvent.click(screen.getByTestId('edit-button'))
-    expect(handleEdit).toHaveBeenCalledWith(mockShoppingList.id)
+    setup(emptyList)
+
+    expect(screen.getByText('Empty List')).toBeInTheDocument()
+    expect(screen.getByText(t('shoppingLists.noProducts'))).toBeInTheDocument()
   })
 
   it('calls handleRemoveList when delete button is clicked', () => {
-    renderShoppingListsCard()
-    fireEvent.click(screen.getByTestId('delete-button'))
-    expect(handleDelete).toHaveBeenCalledWith(mockShoppingList.id)
+    setup()
+
+    const deleteButton = screen.getByTestId('delete-button')
+    fireEvent.click(deleteButton)
+
+    expect(mockHandleRemoveList).toHaveBeenCalledWith('1')
+    expect(mockHandleRemoveList).toHaveBeenCalledTimes(1)
+  })
+
+  it('navigates to the correct URL when the edit button is clicked', () => {
+    setup()
+
+    const editButton = screen.getByTestId('edit-button')
+    fireEvent.click(editButton)
+
+    expect(mockNavigate).toHaveBeenCalledWith({
+      to: '/shopping-list/$listId',
+      params: { listId: '1' },
+    })
+    expect(mockNavigate).toHaveBeenCalledTimes(1)
   })
 })

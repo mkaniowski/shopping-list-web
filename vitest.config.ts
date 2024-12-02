@@ -10,6 +10,7 @@ export default mergeConfig(
       include: ['**/*.spec.tsx'],
       globals: true,
       environment: 'jsdom',
+      setupFiles: 'vitest-setup.ts',
     },
   }),
 )
