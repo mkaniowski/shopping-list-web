@@ -65,6 +65,7 @@ export const RegisterForm = ({ handleSubmit }: IRegisterFormProps) => {
     <div>
       <form
         className='flex flex-col gap-y-4 w-96'
+        data-testid='register-form'
         onSubmit={(e) => {
           e.preventDefault()
           e.stopPropagation()

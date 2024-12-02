@@ -1,3 +1,4 @@
+import React from 'react'
 import { useForm } from '@tanstack/react-form'
 import { zodValidator } from '@tanstack/zod-form-adapter'
 import { ShoppingListProduct } from '@/model/shoppingLists'
@@ -51,9 +52,11 @@ export const ProductForm = ({ handleSubmit, product }: IProductFormProps) => {
                 value={field.state.value}
                 onBlur={field.handleBlur}
                 onChange={(e) => field.handleChange(e.target.value)}
+                data-testid='name-input'
               />
               <span
                 className={`text-sm ${field.state.meta.errors ? 'text-destructive' : 'invisible'}`}
+                data-testid='name-error'
               >
                 {field.state.meta.errors ? field.state.meta.errors[0] : ' '}
               </span>
@@ -74,9 +77,11 @@ export const ProductForm = ({ handleSubmit, product }: IProductFormProps) => {
                 type='number'
                 onBlur={field.handleBlur}
                 onChange={(e) => field.handleChange(parseFloat(e.target.value))}
+                data-testid='quantity-input'
               />
               <span
                 className={`text-sm ${field.state.meta.errors ? 'text-destructive' : 'invisible'}`}
+                data-testid='quantity-error'
               >
                 {field.state.meta.errors ? field.state.meta.errors[0] : ' '}
               </span>
@@ -96,9 +101,11 @@ export const ProductForm = ({ handleSubmit, product }: IProductFormProps) => {
                 value={field.state.value}
                 onBlur={field.handleBlur}
                 onChange={(e) => field.handleChange(e.target.value)}
+                data-testid='quantity-type-input'
               />
               <span
                 className={`text-sm ${field.state.meta.errors ? 'text-destructive' : 'invisible'}`}
+                data-testid='quantity-type-error'
               >
                 {field.state.meta.errors ? field.state.meta.errors[0] : ' '}
               </span>
@@ -115,6 +122,7 @@ export const ProductForm = ({ handleSubmit, product }: IProductFormProps) => {
               <Button
                 type='submit'
                 disabled={!canSubmit}
+                data-testid='submit-button'
               >
                 {isSubmitting ? '...' : t('shoppingLists.form.submit')}
               </Button>
@@ -126,6 +134,7 @@ export const ProductForm = ({ handleSubmit, product }: IProductFormProps) => {
               <Button
                 type='submit'
                 disabled={!canSubmit}
+                data-testid='edit-button'
               >
                 {isSubmitting ? '...' : t('shoppingLists.form.edit')}
               </Button>

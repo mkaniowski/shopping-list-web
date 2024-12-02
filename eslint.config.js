@@ -32,6 +32,7 @@ export default [
       '/src/components/ui',
       'cypress.config.ts',
       '**.cy.tsx',
+      '**.spec.tsx',
     ],
   },
   ...fixupConfigRules(

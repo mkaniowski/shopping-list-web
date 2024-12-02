@@ -12,7 +12,10 @@ export const RegisterCard = ({ handleSubmit }: IRegisterCardProps) => {
   return (
     <Card className='flex items-center flex-col p-4 gap-y-8'>
       <CardHeader>
-        <CardTitle className='text-3xl bg-gradient-to-tl inline-block from-secondary to-accent bg-clip-text text-transparent'>
+        <CardTitle
+          data-testid='register-card-title'
+          className='text-3xl bg-gradient-to-tl inline-block from-secondary to-accent bg-clip-text text-transparent'
+        >
           {t('register.card.title')}
         </CardTitle>
       </CardHeader>

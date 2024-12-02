@@ -16,7 +16,6 @@ i18next
       caches: ['localStorage'],
     },
     fallbackLng: 'en',
-    // lng: 'pl',
     resources: {
       en: { translation: translations.en },
       pl: { translation: translations.pl },
@@ -32,3 +31,4 @@ const Translations = ({ children }: Props) => (
 )
 
 export default Translations
+export { i18next }
