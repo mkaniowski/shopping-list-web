@@ -182,6 +182,7 @@ export default [
       '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
       'filenames/match-regex': [0, '^[a-zA-Z]+$', true],
       'github/no-then': 0,
+      'react/no-children-prop': 0,
     },
   },
   {

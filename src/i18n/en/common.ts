@@ -20,6 +20,11 @@ const common = {
     error: 'An error has occured!',
   },
   soon: 'Comming soon!',
+  navbar: {
+    home: 'Home',
+    lists: 'Shopping lists',
+    logout: 'Logout',
+  },
 }
 
 export default common

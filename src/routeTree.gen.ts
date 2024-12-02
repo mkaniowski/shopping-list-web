@@ -11,98 +11,154 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
-import { Route as IndexImport } from './routes/index'
-import { Route as ShoppingListIndexImport } from './routes/shopping-list/index'
-import { Route as ShoppingListListIdIndexImport } from './routes/shopping-list/$listId/index'
+import { Route as RegisterImport } from './routes/register'
+import { Route as AuthImport } from './routes/_auth'
+import { Route as AuthIndexImport } from './routes/_auth/index'
+import { Route as AuthShoppingListIndexImport } from './routes/_auth/shopping-list/index'
+import { Route as AuthShoppingListListIdIndexImport } from './routes/_auth/shopping-list/$listId/index'
 
 // Create/Update Routes
 
-const IndexRoute = IndexImport.update({
+const RegisterRoute = RegisterImport.update({
+  id: '/register',
+  path: '/register',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const AuthRoute = AuthImport.update({
+  id: '/_auth',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const AuthIndexRoute = AuthIndexImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => AuthRoute,
 } as any)
 
-const ShoppingListIndexRoute = ShoppingListIndexImport.update({
+const AuthShoppingListIndexRoute = AuthShoppingListIndexImport.update({
   id: '/shopping-list/',
   path: '/shopping-list/',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => AuthRoute,
 } as any)
 
-const ShoppingListListIdIndexRoute = ShoppingListListIdIndexImport.update({
-  id: '/shopping-list/$listId/',
-  path: '/shopping-list/$listId/',
-  getParentRoute: () => rootRoute,
-} as any)
+const AuthShoppingListListIdIndexRoute =
+  AuthShoppingListListIdIndexImport.update({
+    id: '/shopping-list/$listId/',
+    path: '/shopping-list/$listId/',
+    getParentRoute: () => AuthRoute,
+  } as any)
 
 // Populate the FileRoutesByPath interface
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/': {
-      id: '/'
+    '/_auth': {
+      id: '/_auth'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof AuthImport
+      parentRoute: typeof rootRoute
+    }
+    '/register': {
+      id: '/register'
+      path: '/register'
+      fullPath: '/register'
+      preLoaderRoute: typeof RegisterImport
+      parentRoute: typeof rootRoute
+    }
+    '/_auth/': {
+      id: '/_auth/'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof IndexImport
-      parentRoute: typeof rootRoute
+      preLoaderRoute: typeof AuthIndexImport
+      parentRoute: typeof AuthImport
     }
-    '/shopping-list/': {
-      id: '/shopping-list/'
+    '/_auth/shopping-list/': {
+      id: '/_auth/shopping-list/'
       path: '/shopping-list'
       fullPath: '/shopping-list'
-      preLoaderRoute: typeof ShoppingListIndexImport
-      parentRoute: typeof rootRoute
+      preLoaderRoute: typeof AuthShoppingListIndexImport
+      parentRoute: typeof AuthImport
     }
-    '/shopping-list/$listId/': {
-      id: '/shopping-list/$listId/'
+    '/_auth/shopping-list/$listId/': {
+      id: '/_auth/shopping-list/$listId/'
       path: '/shopping-list/$listId'
       fullPath: '/shopping-list/$listId'
-      preLoaderRoute: typeof ShoppingListListIdIndexImport
-      parentRoute: typeof rootRoute
+      preLoaderRoute: typeof AuthShoppingListListIdIndexImport
+      parentRoute: typeof AuthImport
     }
   }
 }
 
 // Create and export the route tree
 
+interface AuthRouteChildren {
+  AuthIndexRoute: typeof AuthIndexRoute
+  AuthShoppingListIndexRoute: typeof AuthShoppingListIndexRoute
+  AuthShoppingListListIdIndexRoute: typeof AuthShoppingListListIdIndexRoute
+}
+
+const AuthRouteChildren: AuthRouteChildren = {
+  AuthIndexRoute: AuthIndexRoute,
+  AuthShoppingListIndexRoute: AuthShoppingListIndexRoute,
+  AuthShoppingListListIdIndexRoute: AuthShoppingListListIdIndexRoute,
+}
+
+const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
+
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
-  '/shopping-list': typeof ShoppingListIndexRoute
-  '/shopping-list/$listId': typeof ShoppingListListIdIndexRoute
+  '': typeof AuthRouteWithChildren
+  '/register': typeof RegisterRoute
+  '/': typeof AuthIndexRoute
+  '/shopping-list': typeof AuthShoppingListIndexRoute
+  '/shopping-list/$listId': typeof AuthShoppingListListIdIndexRoute
 }
 
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
-  '/shopping-list': typeof ShoppingListIndexRoute
-  '/shopping-list/$listId': typeof ShoppingListListIdIndexRoute
+  '/register': typeof RegisterRoute
+  '/': typeof AuthIndexRoute
+  '/shopping-list': typeof AuthShoppingListIndexRoute
+  '/shopping-list/$listId': typeof AuthShoppingListListIdIndexRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
-  '/': typeof IndexRoute
-  '/shopping-list/': typeof ShoppingListIndexRoute
-  '/shopping-list/$listId/': typeof ShoppingListListIdIndexRoute
+  '/_auth': typeof AuthRouteWithChildren
+  '/register': typeof RegisterRoute
+  '/_auth/': typeof AuthIndexRoute
+  '/_auth/shopping-list/': typeof AuthShoppingListIndexRoute
+  '/_auth/shopping-list/$listId/': typeof AuthShoppingListListIdIndexRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/shopping-list' | '/shopping-list/$listId'
+  fullPaths:
+    | ''
+    | '/register'
+    | '/'
+    | '/shopping-list'
+    | '/shopping-list/$listId'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/shopping-list' | '/shopping-list/$listId'
-  id: '__root__' | '/' | '/shopping-list/' | '/shopping-list/$listId/'
+  to: '/register' | '/' | '/shopping-list' | '/shopping-list/$listId'
+  id:
+    | '__root__'
+    | '/_auth'
+    | '/register'
+    | '/_auth/'
+    | '/_auth/shopping-list/'
+    | '/_auth/shopping-list/$listId/'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
-  ShoppingListIndexRoute: typeof ShoppingListIndexRoute
-  ShoppingListListIdIndexRoute: typeof ShoppingListListIdIndexRoute
+  AuthRoute: typeof AuthRouteWithChildren
+  RegisterRoute: typeof RegisterRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
-  ShoppingListIndexRoute: ShoppingListIndexRoute,
-  ShoppingListListIdIndexRoute: ShoppingListListIdIndexRoute,
+  AuthRoute: AuthRouteWithChildren,
+  RegisterRoute: RegisterRoute,
 }
 
 export const routeTree = rootRoute
@@ -115,19 +171,32 @@ export const routeTree = rootRoute
     "__root__": {
       "filePath": "__root.tsx",
       "children": [
-        "/",
-        "/shopping-list/",
-        "/shopping-list/$listId/"
+        "/_auth",
+        "/register"
       ]
     },
-    "/": {
-      "filePath": "index.tsx"
+    "/_auth": {
+      "filePath": "_auth.tsx",
+      "children": [
+        "/_auth/",
+        "/_auth/shopping-list/",
+        "/_auth/shopping-list/$listId/"
+      ]
     },
-    "/shopping-list/": {
-      "filePath": "shopping-list/index.tsx"
+    "/register": {
+      "filePath": "register.tsx"
     },
-    "/shopping-list/$listId/": {
-      "filePath": "shopping-list/$listId/index.tsx"
+    "/_auth/": {
+      "filePath": "_auth/index.tsx",
+      "parent": "/_auth"
+    },
+    "/_auth/shopping-list/": {
+      "filePath": "_auth/shopping-list/index.tsx",
+      "parent": "/_auth"
+    },
+    "/_auth/shopping-list/$listId/": {
+      "filePath": "_auth/shopping-list/$listId/index.tsx",
+      "parent": "/_auth"
     }
   }
 }

@@ -20,6 +20,11 @@ const common = {
     error: 'Wystąpił błąd!',
   },
   soon: 'Usługa jeszcze niedostępna',
+  navbar: {
+    home: 'Strona główna',
+    lists: 'Listy zakupów',
+    logout: 'Wyloguj',
+  },
 }
 
 export default common

@@ -8,8 +8,11 @@ import Translations from './i18n/Translations'
 import { routeTree } from './routeTree.gen'
 import ErrorView from './views/ErrorView'
 import NotFoundView from './views/NotFoundView'
-import { keycloak } from '@/shared/keycloak'
 import { ThemeProvider } from '@/context/ThemeContext'
+import { ReactKeycloakProvider } from '@react-keycloak/web'
+import { keycloak } from '@/shared/keycloak'
+import { AuthProvider, useAuth } from '@/shared/auth'
+import { TooltipProvider } from './components/ui/tooltip'
 
 const queryClient = new QueryClient()
 
@@ -24,6 +27,7 @@ export const router = createRouter({
   defaultPendingMinMs: 500,
   context: {
     queryClient,
+    auth: undefined!,
   },
 })
 
@@ -35,48 +39,67 @@ declare module '@tanstack/react-router' {
 }
 
 const InnerApp = () => {
+  const auth = useAuth()
+
   return (
     <RouterProvider
       router={router}
       notFoundMode='fuzzy'
       defaultPreload='intent'
       defaultPendingMinMs={500}
+      context={{ auth }}
     />
   )
 }
 
 const App = () => {
+  const eventHandler = (event: string, error: unknown) => {
+    console.log('onKeycloakEvent', event, error)
+
+    if (event === 'onReady') {
+      console.log('Keycloak is ready')
+    }
+
+    if (event === 'onAuthSuccess') {
+      console.log('Authentication successful')
+    }
+
+    if (event === 'onAuthError') {
+      console.error('Authentication error:', error)
+    }
+
+    if (event === 'onAuthLogout') {
+      console.log('User logged out')
+    }
+  }
+
   return (
-    <ErrorBoundary>
-      <InnerApp />
-    </ErrorBoundary>
+    <ReactKeycloakProvider
+      authClient={keycloak}
+      onEvent={eventHandler}
+    >
+      <AuthProvider>
+        <QueryClientProvider client={queryClient}>
+          <ErrorBoundary>
+            <TooltipProvider>
+              <InnerApp />
+            </TooltipProvider>
+          </ErrorBoundary>
+        </QueryClientProvider>
+      </AuthProvider>
+    </ReactKeycloakProvider>
   )
 }
 
 const rootElement = document.getElementById('root')!
 
-try {
-  const authenticated = await keycloak.init({
-    onLoad: 'login-required',
-  })
-  if (authenticated) {
-    console.log('User is authenticated')
-  } else {
-    console.log('User is not authenticated')
-  }
-} catch (error) {
-  console.error('Failed to initialize adapter:', error)
-}
-
 if (!rootElement.innerHTML) {
   const root = ReactDOM.createRoot(rootElement)
   root.render(
     <Translations>
-      <QueryClientProvider client={queryClient}>
-        <ThemeProvider>
-          <App />
-        </ThemeProvider>
-      </QueryClientProvider>
+      <ThemeProvider>
+        <App />
+      </ThemeProvider>
     </Translations>,
   )
 }

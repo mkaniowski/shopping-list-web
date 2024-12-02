@@ -1,10 +1,11 @@
 import { useTranslation } from 'react-i18next'
 import { Button } from '../ui/button'
 import { useNavigate } from '@tanstack/react-router'
-import { keycloak } from '@/shared/keycloak'
+import { useKeycloak } from '@react-keycloak/web'
 
 export const Navbar = () => {
   const { t } = useTranslation()
+  const { keycloak } = useKeycloak()
   const navigate = useNavigate({ from: window.location.pathname })
 
   return (
@@ -17,7 +18,7 @@ export const Navbar = () => {
             navigate({ to: '/' })
           }}
         >
-          {t('navbar.home')}
+          {t('common.navbar.home')}
         </Button>
         <Button
           className='bg-gradient-to-br from-secondary to-accent'
@@ -25,7 +26,7 @@ export const Navbar = () => {
             navigate({ to: '/shopping-list' })
           }}
         >
-          {t('navbar.lists')}
+          {t('common.navbar.lists')}
         </Button>
         <Button
           className='bg-gradient-to-tr from-accent to-primary'
@@ -33,7 +34,7 @@ export const Navbar = () => {
             keycloak.logout()
           }}
         >
-          {t('navbar.logout')}
+          {t('common.navbar.logout')}
         </Button>
       </span>
     </nav>
