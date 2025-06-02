@@ -42,12 +42,11 @@ const AuthShoppingListIndexRoute = AuthShoppingListIndexImport.update({
   getParentRoute: () => AuthRoute,
 } as any)
 
-const AuthShoppingListListIdIndexRoute =
-  AuthShoppingListListIdIndexImport.update({
-    id: '/shopping-list/$listId/',
-    path: '/shopping-list/$listId/',
-    getParentRoute: () => AuthRoute,
-  } as any)
+const AuthShoppingListListIdIndexRoute = AuthShoppingListListIdIndexImport.update({
+  id: '/shopping-list/$listId/',
+  path: '/shopping-list/$listId/',
+  getParentRoute: () => AuthRoute,
+} as any)
 
 // Populate the FileRoutesByPath interface
 
@@ -133,12 +132,7 @@ export interface FileRoutesById {
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths:
-    | ''
-    | '/register'
-    | '/'
-    | '/shopping-list'
-    | '/shopping-list/$listId'
+  fullPaths: '' | '/register' | '/' | '/shopping-list' | '/shopping-list/$listId'
   fileRoutesByTo: FileRoutesByTo
   to: '/register' | '/' | '/shopping-list' | '/shopping-list/$listId'
   id:
