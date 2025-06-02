@@ -3,7 +3,7 @@ import { defineConfig } from 'cypress'
 export default defineConfig({
   chromeWebSecurity: false,
   experimentalCspAllowList: true,
-  
+
   component: {
     devServer: {
       framework: 'react',
