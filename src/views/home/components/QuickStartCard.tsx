@@ -1,4 +1,5 @@
 import { useTranslation } from 'react-i18next'
+import { useTranslation } from 'react-i18next'
 import {
   Card,
   CardContent,
@@ -9,19 +10,21 @@ import {
 } from '@/components/ui/card'
 
 export const QuickStartCard = () => {
+  const { t } = useTranslation('views/home/components')
+
   const { t } = useTranslation()
 
   return (
     <Card className='w-1/2 h-full'>
       <CardHeader>
         <CardTitle onClick={() => {}}>{t('home.quickStart.title')}</CardTitle>
-        <CardDescription>Card Description</CardDescription>
+        <CardDescription>{t('card-description')}</CardDescription>
       </CardHeader>
       <CardContent>
-        <p>Card Content</p>
+        <p>{t('card-content')}</p>
       </CardContent>
       <CardFooter>
-        <p>Card Footer</p>
+        <p>{t('card-footer')}</p>
       </CardFooter>
     </Card>
   )
