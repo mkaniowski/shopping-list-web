@@ -1,8 +1,11 @@
 import { useTranslation } from 'react-i18next'
+import { useTranslation } from 'react-i18next'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components'
 import { useNavigate, useRouter } from '@tanstack/react-router'
 
 export const RecentListsCard = () => {
+  const { t } = useTranslation('views/home/components')
+
   const { t } = useTranslation()
   const navigate = useNavigate({ from: '/' })
   const router = useRouter()
@@ -21,13 +24,13 @@ export const RecentListsCard = () => {
         >
           {t('home.recentLists.title')}
         </CardTitle>
-        <CardDescription>Card Description</CardDescription>
+        <CardDescription>{t('card-description')}</CardDescription>
       </CardHeader>
       <CardContent>
-        <p>Card Content</p>
+        <p>{t('card-content')}</p>
       </CardContent>
       <CardFooter>
-        <p>Card Footer</p>
+        <p>{t('card-footer')}</p>
       </CardFooter>
     </Card>
   )
